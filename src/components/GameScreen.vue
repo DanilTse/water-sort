@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="game-wrap">
-      <bottle v-for="(bottle, key) in bottles" :key="key" :data="bottle"/>
+      <bottle v-for="(bottle, key) in bottles" :key="key" :data="bottle" v-on:bottleClick="bottleClick"/>
     </div>
   </div>
 </template>
@@ -32,18 +32,29 @@ export default {
       i++
     }
     this.bottles.push(this.emptyBottle)
+
   },
   methods: {
     createBottle(){
         let i = 0
-        let bottle = []
+        const bottle = {}
+        bottle.colors = [];
         while(i < this.bottleSize){
           i++
-          bottle.push(this.colors[Math.floor(Math.random() * this.colors.length)])
+          bottle.colors.push(this.colors[Math.floor(Math.random() * this.colors.length)])
         }
+        bottle.checked = false
       return bottle
     },
-
+    bottleClick(data){
+      this.resetAllBottles();
+      data.checked = true
+    },
+    resetAllBottles(){
+      this.bottles.forEach(element => {
+        element.checked = false
+      });
+    }
   }
 }
 </script>
@@ -51,5 +62,9 @@ export default {
 <style scoped lang="scss">
 .game-wrap{
   display: flex;
+  height: 100vh;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 </style>
